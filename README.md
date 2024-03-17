@@ -17,3 +17,4 @@ Cyfrowa wersja karty drogowej, jako wsparcie przy pilnowaniu i obliczaniu czasu 
 
 - [ ] uzupełnianie czasu w idntyczny sposób jak na prawdziwej karcie, z automatycznym wyliczaniem czasu do stawienia się na kolejnym punkcie kontrolnym
 - [ ] ekran z zegarem omierzający czas do stawienia się na kolejnym punkcie, lub wyjeździe z przegrupowania
+- [ ] powiadomienia z informacją o koniecznośi stawienia się w punkcie
