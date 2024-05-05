@@ -10,6 +10,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import com.devchew.kartadrogowa.ui.components.CardHeader
 import com.devchew.kartadrogowa.ui.theme.KartaDrogowaTheme
 
 class MainActivity : ComponentActivity() {
@@ -22,12 +23,13 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    Greeting("Android")
+                    CardHeader(69, "Karta drogowa 1\nRally monte calvaria\n17.02.2024")
                 }
             }
         }
     }
 }
+
 
 @Composable
 fun Greeting(name: String, modifier: Modifier = Modifier) {
@@ -41,6 +43,6 @@ fun Greeting(name: String, modifier: Modifier = Modifier) {
 @Composable
 fun GreetingPreview() {
     KartaDrogowaTheme {
-        Greeting("Android")
+        CardHeader(69, "Karta drogowa 1\nRally monte calvaria\n17.02.2024")
     }
 }
