@@ -30,7 +30,8 @@ import androidx.compose.ui.unit.sp
 import com.devchew.kartadrogowa.ui.theme.KartaDrogowaTheme
 
 @Composable
-fun Strip(modifier: Modifier = Modifier) {
+fun Strip(pkc: Int, modifier: Modifier = Modifier) {
+
     Column(
         verticalArrangement = Arrangement.SpaceBetween,
         horizontalAlignment = Alignment.Start,
@@ -42,7 +43,7 @@ fun Strip(modifier: Modifier = Modifier) {
             .then(modifier)
     ) {
         Text(
-            text = "PKC\n1",
+            text = "PKC\n$pkc",
             style = TextStyle(
                 fontSize = 10.sp,
                 fontWeight = FontWeight(400),
@@ -54,7 +55,7 @@ fun Strip(modifier: Modifier = Modifier) {
                 .height(24.dp)
         )
         Text(
-            text = "PKC\n2",
+            text = "PKC\n${(pkc + 1)}",
             style = TextStyle(
                 fontSize = 10.sp,
                 fontWeight = FontWeight(400),
@@ -69,7 +70,11 @@ fun Strip(modifier: Modifier = Modifier) {
 }
 
 @Composable
-fun Details(modifier: Modifier = Modifier) {
+fun Details(
+    name: String,
+    duration: Float,
+    modifier: Modifier = Modifier
+) {
     Column(
         verticalArrangement = Arrangement.SpaceBetween,
         horizontalAlignment = Alignment.End,
@@ -86,7 +91,7 @@ fun Details(modifier: Modifier = Modifier) {
                 .fillMaxWidth()
         ) {
             Text(
-                text = "PS 1 Targ 1\n1,45 km",
+                text = "${name}\n${duration}",
                 style = TextStyle(
                     fontSize = 10.sp,
                     fontWeight = FontWeight(700),
@@ -120,7 +125,8 @@ fun Details(modifier: Modifier = Modifier) {
             Icon(
                 Icons.Default.PlayArrow,
                 contentDescription = "going to",
-                modifier = Modifier.offset((-4).dp, 22.dp)
+                modifier = Modifier.offset((-4).dp, 22.dp),
+                tint = Color.Black
             )
             InputGroup(
                 name = "Rzeczywisty\nczas startu",
@@ -132,12 +138,14 @@ fun Details(modifier: Modifier = Modifier) {
             Icon(
                 Icons.Rounded.CheckCircle,
                 contentDescription = "Finish",
-                modifier = Modifier.offset(0.dp, 22.dp)
+                modifier = Modifier.offset(0.dp, 22.dp),
+                tint = Color.Black
             )
             Icon(
                 Icons.Default.PlayArrow,
                 contentDescription = "going to",
-                modifier = Modifier.offset((-4).dp, 22.dp)
+                modifier = Modifier.offset((-4).dp, 22.dp),
+                tint = Color.Black
             )
             InputGroup(
                 name = "Idealny\nczas przejazdu",
@@ -204,8 +212,12 @@ fun OSPanel(modifier: Modifier = Modifier) {
         verticalAlignment = Alignment.CenterVertically,
         modifier = baseModifier.then(modifier)
     ) {
-        Strip()
-        Details(Modifier.weight(1f))
+        Strip(1)
+        Details(
+            name = "PS 1 Targ 1",
+            duration = 1.45f,
+            modifier= Modifier.weight(1f)
+        )
         NextOS()
     }
 }

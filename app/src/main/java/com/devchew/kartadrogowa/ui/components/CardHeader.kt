@@ -32,17 +32,15 @@ import com.devchew.kartadrogowa.ui.theme.KartaDrogowaTheme
 @Composable
 fun CardHeader(carNumber: Number, description: String, modifier: Modifier = Modifier) {
 
-    val baseModifier: Modifier = Modifier
-        .border(width = 1.dp, color = Color(0xFF000000))
-        .fillMaxWidth()
-        .height(40.dp)
-        .background(color = Color(0xFFFFFFFF))
-        .padding(start = 2.dp, top = 2.dp, end = 2.dp, bottom = 2.dp)
-
     Row(
-        horizontalArrangement = Arrangement.spacedBy(27.dp, Alignment.Start),
+        horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically,
-        modifier = baseModifier.then(modifier)
+        modifier = Modifier
+            .border(width = 1.dp, color = Color(0xFF000000))
+            .fillMaxWidth()
+            .background(color = Color(0xFFFFFFFF))
+            .padding(5.dp)
+            .then(modifier)
     ) {
         Image(
             painter = painterResource(id = R.drawable.calvaria_logo),
