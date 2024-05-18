@@ -29,8 +29,30 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.devchew.kartadrogowa.ui.theme.KartaDrogowaTheme
 
+enum class OSPanelType {
+    Start,
+    Normal
+}
+
+data class OSPanelData(
+    val pkcType: OSPanelType,
+    val pkc: Int,
+    val name: String?,
+    val duration: Float?,
+    val finishTime: TimeStruct?,
+    val finishResult: TimeStruct?,
+    val provisionalStartTime: TimeStruct?,
+    val realStartTime: TimeStruct?,
+    val idealTime: TimeStruct?,
+    val pkcTime: TimeStruct?,
+    val estimatedTime: TimeStruct?,
+)
+
 @Composable
-fun Strip(pkc: Int, modifier: Modifier = Modifier) {
+fun Strip(
+    pkc: Int,
+    modifier: Modifier = Modifier
+) {
 
     Column(
         verticalArrangement = Arrangement.SpaceBetween,
@@ -71,9 +93,17 @@ fun Strip(pkc: Int, modifier: Modifier = Modifier) {
 
 @Composable
 fun Details(
-    name: String,
-    duration: Float,
-    modifier: Modifier = Modifier
+    pkcType: OSPanelType,
+    pkc: Int,
+    modifier: Modifier = Modifier,
+    name: String?,
+    duration: Float?,
+    finishTime: TimeStruct? = null,
+    finishResult: TimeStruct? = null,
+    provisionalStartTime: TimeStruct? = null,
+    realStartTime: TimeStruct? = null,
+    idealTime: TimeStruct? = null,
+    pkcTime: TimeStruct? = null,
 ) {
     Column(
         verticalArrangement = Arrangement.SpaceBetween,
@@ -90,50 +120,55 @@ fun Details(
             modifier = Modifier
                 .fillMaxWidth()
         ) {
-            Text(
-                text = "${name}\n${duration}",
-                style = TextStyle(
-                    fontSize = 10.sp,
-                    fontWeight = FontWeight(700),
-                    color = Color(0xFF000000),
-                ),
-                modifier = Modifier
-                    .width(52.dp)
-                    .height(24.dp)
-            )
-            InputGroup(
-                name = "Czas mety",
-                description = null,
-                h = 4,
-                m = 5,
-                s = 56,
-                tenths = 58
-            )
+
+            if (pkcType == OSPanelType.Normal) {
+                Text(
+                    text = "${name}\n${duration}",
+                    style = TextStyle(
+                        fontSize = 10.sp,
+                        fontWeight = FontWeight(700),
+                        color = Color(0xFF000000),
+                    ),
+                    modifier = Modifier
+                        .width(52.dp)
+                        .height(24.dp)
+                )
+                InputGroup(
+                    name = "Czas mety",
+                    description = null,
+                    h = finishTime?.h,
+                    m = finishTime?.m,
+                    s = finishTime?.s,
+                    tenths = finishTime?.tenths
+                )
+            }
         }
         Row(
-            horizontalArrangement = Arrangement.SpaceBetween,
+            horizontalArrangement = Arrangement.spacedBy(8.dp, Alignment.End),
             verticalAlignment = Alignment.Top,
             modifier = Modifier
                 .fillMaxWidth()
         ) {
-            InputGroup(
-                name = "Prowizoryczny\nczas startu(+3min)",
-                description = null,
-                h = 4,
-                m = 5
-            )
-            Icon(
-                Icons.Default.PlayArrow,
-                contentDescription = "going to",
-                modifier = Modifier.offset((-4).dp, 22.dp),
-                tint = Color.Black
-            )
+            if(pkcType == OSPanelType.Normal) {
+                InputGroup(
+                    name = "Prowizoryczny\nczas startu(+3min)",
+                    description = null,
+                    h = provisionalStartTime?.h,
+                    m = provisionalStartTime?.m,
+                )
+                Icon(
+                    Icons.Default.PlayArrow,
+                    contentDescription = "going to",
+                    modifier = Modifier.offset((-4).dp, 22.dp),
+                    tint = Color.Black
+                )
+            }
             InputGroup(
                 name = "Rzeczywisty\nczas startu",
                 description = null,
                 gray = true,
-                h = 4,
-                m = 5
+                h = realStartTime?.h,
+                m = realStartTime?.m,
             )
             Icon(
                 Icons.Rounded.CheckCircle,
@@ -150,8 +185,8 @@ fun Details(
             InputGroup(
                 name = "Idealny\nczas przejazdu",
                 description = null,
-                h = 4,
-                m = 5
+                h = idealTime?.h,
+                m = idealTime?.m,
             )
         }
         Row(
@@ -160,27 +195,32 @@ fun Details(
             modifier = Modifier
                 .fillMaxWidth()
         ) {
+            if (pkcType == OSPanelType.Normal) {
+                InputGroup(
+                    name = null,
+                    description = null,
+                    h = null,
+                    m = finishResult?.m,
+                    s = finishResult?.s,
+                    tenths = finishResult?.tenths
+                )
+            }
             InputGroup(
                 name = null,
-                description = null,
-                h = null,
-                m = 5,
-                s = 45,
-                tenths = 67
-            )
-            InputGroup(
-                name = null,
-                description = "PKC3",
+                description = "PKC ${(pkc + 1)}",
                 gray = true,
-                h = 4,
-                m = 5
+                h = pkcTime?.h,
+                m = pkcTime?.m,
             )
         }
     }
 }
 
 @Composable
-fun NextOS(modifier: Modifier = Modifier) {
+fun NextOS(
+    estimatedTime: TimeStruct? = null,
+    modifier: Modifier = Modifier
+) {
     Column(
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.Start,
@@ -195,30 +235,45 @@ fun NextOS(modifier: Modifier = Modifier) {
         InputGroup(
             name = "Przewidywany\nczas przejazdu",
             description = "PKC 1",
-            h = 4,
-            m = 5
+            h = estimatedTime?.h,
+            m = estimatedTime?.m,
         )
     }
 }
 
+
+
 @Composable
-fun OSPanel(modifier: Modifier = Modifier) {
-    val baseModifier: Modifier = Modifier
-        .fillMaxWidth()
-        .height(170.dp)
+fun OSPanel(
+    modifier: Modifier = Modifier,
+    panelData: OSPanelData
+) {
+
 
     Row(
         horizontalArrangement = Arrangement.Start,
         verticalAlignment = Alignment.CenterVertically,
-        modifier = baseModifier.then(modifier)
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(170.dp).then(modifier)
     ) {
-        Strip(1)
+        Strip(pkc = panelData.pkc)
         Details(
-            name = "PS 1 Targ 1",
-            duration = 1.45f,
+            pkcType = panelData.pkcType,
+            name = panelData.name,
+            duration = panelData.duration,
+            pkc = panelData.pkc,
+            finishTime = panelData.finishTime,
+            finishResult = panelData.finishResult,
+            provisionalStartTime = panelData.provisionalStartTime,
+            realStartTime = panelData.realStartTime,
+            idealTime = panelData.idealTime,
+            pkcTime = panelData.pkcTime,
             modifier= Modifier.weight(1f)
         )
-        NextOS()
+        NextOS(
+            estimatedTime = panelData.estimatedTime
+        )
     }
 }
 
@@ -227,7 +282,24 @@ fun OSPanel(modifier: Modifier = Modifier) {
 )
 @Composable
 fun PreviewOSPanel() {
+
+    val panelData = OSPanelData(
+        pkcType = OSPanelType.Normal,
+        pkc = 1,
+        name = "PS 1 Targ 1",
+        duration = 1.45f,
+        finishTime = TimeStruct(-1, -1, -1, -1),
+        finishResult = TimeStruct(-1, -1, -1, -1),
+        provisionalStartTime = TimeStruct(-1, -1, -1, -1),
+        realStartTime = TimeStruct(-1, -1, -1, -1),
+        idealTime = TimeStruct(-1, -1, -1, -1),
+        pkcTime = TimeStruct(-1, -1, -1, -1),
+        estimatedTime = TimeStruct(-1, -1, -1, -1),
+    )
+
     KartaDrogowaTheme {
-        OSPanel()
+        OSPanel(
+            panelData = panelData
+        )
     }
 }

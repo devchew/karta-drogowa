@@ -30,7 +30,7 @@ import com.devchew.kartadrogowa.R
 import com.devchew.kartadrogowa.ui.theme.KartaDrogowaTheme
 
 @Composable
-fun CardHeader(carNumber: Number, description: String, modifier: Modifier = Modifier) {
+fun CardHeader(carNumber: Number, name: String, date: String, cardNumber: Number, modifier: Modifier = Modifier) {
 
     Row(
         horizontalArrangement = Arrangement.SpaceBetween,
@@ -80,7 +80,9 @@ fun CardHeader(carNumber: Number, description: String, modifier: Modifier = Modi
             )
         }
         Text(
-            text = description,
+            text = "Karta drogowa $cardNumber\n" +
+                    "$name\n" +
+                    date,
             style = TextStyle(
                 fontSize = 10.sp,
                 fontWeight = FontWeight(700),
@@ -104,6 +106,11 @@ fun CardHeader(carNumber: Number, description: String, modifier: Modifier = Modi
 @Composable
 fun Preview() {
     KartaDrogowaTheme {
-        CardHeader(69, "Karta drogowa 1\nRally monte calvaria\n17.02.2024")
+        CardHeader(
+            carNumber = 1,
+            name = "Rally Monte Calvaria",
+            date = "2021-10-10",
+            cardNumber = 1
+        )
     }
 }

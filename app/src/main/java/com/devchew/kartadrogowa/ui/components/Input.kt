@@ -41,6 +41,12 @@ import com.chargemap.compose.numberpicker.NumberPicker
 import com.devchew.kartadrogowa.ui.theme.KartaDrogowaTheme
 import kotlinx.coroutines.launch
 
+data class TimeStruct(
+    val h: Int?,
+    val m: Int?,
+    val s: Int?,
+    val tenths: Int?
+)
 
 @Composable
 fun InputBox(prefix: String, value: Int, gray: Boolean = false) {
@@ -49,6 +55,11 @@ fun InputBox(prefix: String, value: Int, gray: Boolean = false) {
 
     if (gray) {
         background = Color.LightGray
+    }
+
+    var textValue = "--"
+    if (value >= 0) {
+        textValue = value.toString().padStart(2, '0')
     }
 
     Column(
@@ -71,7 +82,7 @@ fun InputBox(prefix: String, value: Int, gray: Boolean = false) {
                 .offset(3.dp, 1.dp)
         )
         Text(
-            text = value.toString().padStart(2, '0'),
+            text = textValue,
             style = TextStyle(
                 fontSize = 16.sp,
                 fontWeight = FontWeight(400),
@@ -95,6 +106,7 @@ fun InputGroup(
     m: Int? = null,
     s: Int? = null,
     tenths: Int? = null,
+    onChange: (TimeStruct) -> Unit = { _ -> },
     gray: Boolean = false
 ) {
     var hValue by remember { mutableStateOf(h) }
@@ -108,14 +120,17 @@ fun InputGroup(
 
     if (showBottomSheet) {
         ModalBottomSheet(
-            onDismissRequest = { showBottomSheet = false },
+            onDismissRequest = {
+                showBottomSheet = false
+                onChange(TimeStruct(hValue, mValue, sValue, tenthsValue))
+           },
             sheetState = sheetState
         ) {
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(bottom = 40.dp),
-                verticalAlignment = Alignment.CenterVertically,
+                verticalAlignment = Alignment.Top,
                 // center horizontally with 10dp gap
                 horizontalArrangement = Arrangement.spacedBy(10.dp, Alignment.CenterHorizontally)
             ) {
@@ -202,17 +217,17 @@ fun InputGroup(
                 horizontalArrangement = Arrangement.spacedBy(-1.dp, Alignment.CenterHorizontally),
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                if (hValue != null) {
-                    InputBox("H", hValue!!, gray)
+                if (h != null) {
+                    InputBox("H", h, gray)
                 }
-                if (mValue != null) {
-                    InputBox("M", mValue!!, gray)
+                if (m != null) {
+                    InputBox("M", m, gray)
                 }
-                if (sValue != null) {
-                    InputBox("S", sValue!!, gray)
+                if (s != null) {
+                    InputBox("S", s, gray)
                 }
-                if (tenthsValue != null) {
-                    InputBox("1/10", tenthsValue!!, gray)
+                if (tenths != null) {
+                    InputBox("1/10", tenths, gray)
                 }
             }
             if (!description.isNullOrBlank()) {
@@ -234,7 +249,7 @@ fun InputGroup(
 
 @Composable
 @Preview(
-    showBackground = true, backgroundColor = 0xFFFFFFFF, showSystemUi = true,
+    showBackground = true, backgroundColor = 0xFFFFFFFF, showSystemUi = false,
     uiMode = Configuration.UI_MODE_NIGHT_YES or Configuration.UI_MODE_TYPE_NORMAL
 )
 fun InputGroupPreview() {
@@ -242,7 +257,7 @@ fun InputGroupPreview() {
         InputGroup(
             "test",
             null,
-            4,
+            -1,
             13
         )
     }
