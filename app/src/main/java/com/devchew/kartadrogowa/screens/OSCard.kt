@@ -49,7 +49,9 @@ fun OSCard(data: CardData) {
 @Preview(showBackground = true, name = "OSCard", showSystemUi = true)
 @Composable
 fun OSCardPreview() {
-    val tempCardData = CardLogic(
+    val tempCardData = CardLogic()
+
+    tempCardData.Create(
         carNumber = 68,
         name = "Rally Monte Calvaria",
         date = "2021-10-10",
