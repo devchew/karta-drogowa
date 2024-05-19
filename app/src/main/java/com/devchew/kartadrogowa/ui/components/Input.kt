@@ -11,42 +11,29 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextField
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.paint
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.chargemap.compose.numberpicker.NumberPicker
+import com.devchew.kartadrogowa.logic.TimeStruct
 import com.devchew.kartadrogowa.ui.theme.KartaDrogowaTheme
-import kotlinx.coroutines.launch
-
-data class TimeStruct(
-    val h: Int?,
-    val m: Int?,
-    val s: Int?,
-    val tenths: Int?
-)
 
 @Composable
 fun InputBox(prefix: String, value: Int, gray: Boolean = false) {
@@ -106,7 +93,8 @@ fun InputGroup(
     m: Int? = null,
     s: Int? = null,
     tenths: Int? = null,
-    onChange: (TimeStruct) -> Unit = { _ -> },
+    onValueChange: (time: TimeStruct) -> Unit = { _ -> },
+    beforeChane: () -> TimeStruct? = { null },
     gray: Boolean = false
 ) {
     var hValue by remember { mutableStateOf(h) }
@@ -118,75 +106,93 @@ fun InputGroup(
     val sheetState = rememberModalBottomSheetState()
     var showBottomSheet by remember { mutableStateOf(false) }
 
+    //to trzeba przebudować, dodać przycisk zatwierdź
+    // zmienić inputy na zwykłe textfieldy
+
     if (showBottomSheet) {
         ModalBottomSheet(
             onDismissRequest = {
                 showBottomSheet = false
-                onChange(TimeStruct(hValue, mValue, sValue, tenthsValue))
-           },
+            },
             sheetState = sheetState
         ) {
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(bottom = 40.dp),
-                verticalAlignment = Alignment.Top,
-                // center horizontally with 10dp gap
-                horizontalArrangement = Arrangement.spacedBy(10.dp, Alignment.CenterHorizontally)
+
+            Column(
+                verticalArrangement = Arrangement.spacedBy(10.dp, Alignment.CenterVertically),
+                horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                if (h != null) {
-                    Row(
-                        verticalAlignment = Alignment.CenterVertically,
+                Text(text = "Czas")
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    verticalAlignment = Alignment.Top,
+                    horizontalArrangement = Arrangement.spacedBy(
+                        10.dp,
+                        Alignment.CenterHorizontally
+                    )
+                ) {
+                    if (h != null) {
+                        Row(
+                            verticalAlignment = Alignment.CenterVertically,
 
-                    ) {
-                        Text(text = "H: ")
-                        NumberPicker(
-                            value = hValue!!,
-                            range = 0..24,
-                            onValueChange = {
-                                hValue = it
-                            }
-                        )
+                            ) {
+                            Text(text = "H: ")
+                            NumberPicker(
+                                value = hValue!!,
+                                range = 0..24,
+                                onValueChange = {
+                                    hValue = it
+                                }
+                            )
+                        }
+                    }
+                    if (m != null) {
+                        Row(verticalAlignment = Alignment.CenterVertically) {
+
+                            Text(text = "M: ")
+                            NumberPicker(
+                                value = mValue!!,
+                                range = 0..59,
+                                onValueChange = {
+                                    mValue = it
+                                }
+                            )
+                        }
+                    }
+                    if (s != null) {
+                        Row(verticalAlignment = Alignment.CenterVertically) {
+
+                            Text(text = "S: ")
+                            NumberPicker(
+                                value = sValue!!,
+                                range = 0..60,
+                                onValueChange = {
+                                    sValue = it
+                                }
+                            )
+                        }
+                    }
+                    if (tenths != null) {
+                        Row(verticalAlignment = Alignment.CenterVertically) {
+
+                            Text(text = "1/10: ")
+                            NumberPicker(
+                                value = tenthsValue!!,
+                                range = 0..100,
+                                onValueChange = {
+                                    tenthsValue = it
+                                }
+                            )
+                        }
                     }
                 }
-                if (m != null) {
-                    Row(verticalAlignment = Alignment.CenterVertically) {
-
-                        Text(text = "M: ")
-                        NumberPicker(
-                            value = mValue!!,
-                            range = 0..59,
-                            onValueChange = {
-                                mValue = it
-                            }
-                        )
-                    }
-                }
-                if (s != null) {
-                    Row(verticalAlignment = Alignment.CenterVertically) {
-
-                        Text(text = "S: ")
-                        NumberPicker(
-                            value = sValue!!,
-                            range = 0..60,
-                            onValueChange = {
-                                sValue = it
-                            }
-                        )
-                    }
-                }
-                if (tenths != null) {
-                    Row(verticalAlignment = Alignment.CenterVertically) {
-
-                        Text(text = "1/10: ")
-                        NumberPicker(
-                            value = tenthsValue!!,
-                            range = 0..100,
-                            onValueChange = {
-                                tenthsValue = it
-                            }
-                        )
-                    }
+                Button(
+                    onClick = {
+                        showBottomSheet = false
+                        onValueChange(TimeStruct(hValue!!, mValue!!, sValue!!, tenthsValue!!))
+                    },
+                    modifier = Modifier.padding(bottom = 40.dp, top = 10.dp)
+                ) {
+                    Text("Zatwierdź")
                 }
             }
 
@@ -194,7 +200,16 @@ fun InputGroup(
     }
     Surface(
         color = Color.Transparent,
-        onClick = { showBottomSheet = true }
+        onClick = {
+            showBottomSheet = true
+            val before = beforeChane()
+            if (before != null) {
+                hValue = before.h
+                mValue = before.m
+                sValue = before.s
+                tenthsValue = before.tenths
+            }
+        }
     ) {
         Column(
             verticalArrangement = Arrangement.spacedBy(-1.dp, Alignment.CenterVertically),
