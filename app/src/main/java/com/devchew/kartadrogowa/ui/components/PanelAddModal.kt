@@ -31,7 +31,7 @@ import com.devchew.kartadrogowa.logic.OSPanelType
 fun PanelAddModal(
     onConfirmation: (type: OSPanelType, name: String, duration: Float) -> Unit
 ) {
-    val openAlertDialog = remember { mutableStateOf(true) }
+    val openAlertDialog = remember { mutableStateOf(false) }
 
     val name = remember { mutableStateOf("") }
     val type = remember { mutableStateOf(OSPanelType.Normal) }
