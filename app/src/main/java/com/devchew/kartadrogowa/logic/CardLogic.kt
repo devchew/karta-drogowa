@@ -17,6 +17,7 @@ class CardLogic(
 ) {
     var panels: List<PanelLogic> = listOf()
 
+
     // Add panel to the list of panels and return panel class
     fun addPanel(
         type: OSPanelType,
@@ -30,7 +31,9 @@ class CardLogic(
             val prevPanel = panels[panels.size - 2]
             val currentPanel = panels[panels.size - 1]
             prevPanel.finishCallback = {
-                currentPanel.provisionalStartTime.value = prevPanel.pkcTime.value
+                currentPanel.provisionalStartTimeChange(
+                    sumTime(listOf(prevPanel.pkcTime.value, TimeStruct(0,3,0,0)))
+                )
             }
         }
     }

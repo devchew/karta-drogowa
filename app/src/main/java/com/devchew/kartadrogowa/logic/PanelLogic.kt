@@ -1,7 +1,6 @@
 package com.devchew.kartadrogowa.logic
 
 import androidx.compose.runtime.mutableStateOf
-import java.time.LocalTime
 
 class TimeStruct(
     val h: Int = -1,
@@ -35,28 +34,6 @@ class PanelLogic(
 
     var finishCallback: (() -> Unit)? = null
 
-    private fun getCurrentTime(): TimeStruct {
-        val currentTime = LocalTime.now()
-        return TimeStruct(currentTime.hour, currentTime.minute, currentTime.second, currentTime.nano / 100000000)
-    }
-
-    private fun sumTime(times: List<TimeStruct>): TimeStruct {
-        var h: Int = times[0].h
-        var m: Int = times[0].m
-        var s: Int = times[0].s
-        var tenths: Int = times[0].tenths
-
-        // loop through all times but skip the first one
-        for (i in 1 until times.size) {
-            val time = times[i]
-            if (!time.isSet()) continue
-            h += time.h
-            m += time.m
-            s += time.s
-            tenths += time.tenths
-        }
-        return TimeStruct(h, m, s, tenths)
-    }
 
 
     //finishTime
@@ -75,7 +52,8 @@ class PanelLogic(
         if (finishResult.value.isSet()) {
             return finishResult.value
         }
-        return TimeStruct(0,0,0,0)
+        // get finishTime by subtracting realStartTime from finishTime
+        return subtractTime(finishTime.value, realStartTime.value)
     }
     fun finishResultChange(time: TimeStruct) {
         finishResult.value = time
@@ -90,6 +68,11 @@ class PanelLogic(
     }
     fun provisionalStartTimeChange(time: TimeStruct) {
         provisionalStartTime.value = time
+
+        // if realStartTime is not set, set realStartTime to provisionalStartTime
+        if (!realStartTime.value.isSet()) {
+            realStartTimeChange(provisionalStartTime.value)
+        }
     }
 
     /* realStartTime
@@ -106,7 +89,7 @@ class PanelLogic(
         // if ideal time is set,
         // set pkcTimeSuggested to realStartTime + idealTime
         if (idealTime.value.isSet()) {
-            estimatedTime.value = sumTime(listOf(realStartTime.value, idealTime.value))
+            estimatedTimeChange(sumTime(listOf(realStartTime.value, idealTime.value)))
         }
 
     }
@@ -123,7 +106,7 @@ class PanelLogic(
         // if realStartTime is set,
         // set pkcTimeSuggested to realStartTime + idealTime
         if (realStartTime.value.isSet()) {
-            estimatedTime.value = sumTime(listOf(realStartTime.value, idealTime.value))
+            estimatedTimeChange(sumTime(listOf(realStartTime.value, idealTime.value)))
         }
     }
 
