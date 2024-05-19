@@ -11,7 +11,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
-import androidx.compose.material3.DropdownMenu
+import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.TextField
@@ -22,6 +22,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import com.devchew.kartadrogowa.logic.OSPanelType
@@ -30,12 +31,11 @@ import com.devchew.kartadrogowa.logic.OSPanelType
 fun PanelAddModal(
     onConfirmation: (type: OSPanelType, name: String, duration: Float) -> Unit
 ) {
-    val openAlertDialog = remember { mutableStateOf(false) }
+    val openAlertDialog = remember { mutableStateOf(true) }
 
     val name = remember { mutableStateOf("") }
     val type = remember { mutableStateOf(OSPanelType.Normal) }
     val duration = remember { mutableFloatStateOf(0f) }
-    val dropdownMenuState = remember { mutableStateOf(false) }
 
     when {
         !openAlertDialog.value -> Row(
@@ -80,17 +80,21 @@ fun PanelAddModal(
                         onValueChange = { text -> duration.floatValue = text.toFloat() },
                         label = { Text("Długość PKC") }
                     )
-                    DropdownMenu(
-                        expanded = dropdownMenuState.value,
-                        onDismissRequest = { type.value = OSPanelType.Normal },
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.Center,
+                        verticalAlignment = Alignment.CenterVertically,
                     ) {
-                        TextButton(onClick = { type.value = OSPanelType.Start }) {
-                            Text("Start")
-                        }
-                        TextButton(onClick = { type.value = OSPanelType.Normal }) {
-                            Text("Normalny")
-                        }
+                        Text(
+                            "Startowy PKC",
+                            modifier = Modifier.padding(10.dp),
+                        )
+                        Switch(checked = type.value == OSPanelType.Start, onCheckedChange = {
+                            type.value = if (it) OSPanelType.Start else OSPanelType.Normal
+                        })
                     }
+
+
                     Row(
                         modifier = Modifier
                             .fillMaxWidth(),
@@ -122,4 +126,10 @@ fun PanelAddModal(
 
     }
 
+}
+
+@Preview(showBackground = true, name = "PanelAddModal", showSystemUi = true)
+@Composable
+fun PreviewPanelAddModal() {
+    PanelAddModal { _, _, _ -> }
 }
