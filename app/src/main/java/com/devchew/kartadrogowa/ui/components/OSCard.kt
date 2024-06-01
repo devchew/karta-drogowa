@@ -56,7 +56,7 @@ fun OSCard(
                             cardId = cardId,
                         ),
                         callback = { id ->
-                            viewModel.loadCard(id)
+                            viewModel.loadCard(cardId)
                         }
                     )
                 }
