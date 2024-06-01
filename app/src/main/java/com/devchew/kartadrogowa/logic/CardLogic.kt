@@ -12,15 +12,33 @@ data class CardData(
     val panels: List<PanelLogic>
 )
 
+data class CardDescription(
+    val cardNumber: Number,
+    val name: String,
+    val date: String,
+    val carNumber: Int,
+    val id: String
+)
+
 class CardLogic() {
+    val id: String = java.util.UUID.randomUUID().toString()
     private var cardNumber: Number = 0
     private var name: String = ""
     private var date: String = ""
     private var carNumber: Int = 0
-    var panels: MutableState<List<PanelLogic>> = mutableStateOf(listOf())
+    private var panels: MutableState<List<PanelLogic>> = mutableStateOf(listOf())
     var initialized = mutableStateOf(false)
 
-    fun Create(
+    fun loadCardData(cardData: CardData) {
+        this.cardNumber = cardData.cardNumber
+        this.name = cardData.name
+        this.date = cardData.date
+        this.carNumber = cardData.carNumber
+        this.panels.value = cardData.panels
+        this.initialized.value = true
+    }
+
+    fun create(
         cardNumber: Number,
         name: String,
         date: String,

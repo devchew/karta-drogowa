@@ -17,6 +17,7 @@ import androidx.compose.material3.TextButton
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableFloatStateOf
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -29,6 +30,7 @@ import com.devchew.kartadrogowa.logic.OSPanelType
 
 @Composable
 fun PanelAddModal(
+    starting: Boolean = false,
     onConfirmation: (type: OSPanelType, name: String, duration: Float) -> Unit
 ) {
     val openAlertDialog = remember { mutableStateOf(false) }
@@ -36,6 +38,10 @@ fun PanelAddModal(
     val name = remember { mutableStateOf("") }
     val type = remember { mutableStateOf(OSPanelType.Normal) }
     val duration = remember { mutableFloatStateOf(0f) }
+
+    if (starting) {
+        type.value = OSPanelType.Start
+    }
 
     when {
         !openAlertDialog.value -> Row(
@@ -76,7 +82,7 @@ fun PanelAddModal(
                     )
                     TextField(
                         value = duration.floatValue.toString(),
-                        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),
+                        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                         onValueChange = { text -> duration.floatValue = text.toFloat() },
                         label = { Text("Długość PKC") }
                     )

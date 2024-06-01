@@ -1,4 +1,4 @@
-package com.devchew.kartadrogowa.screens
+package com.devchew.kartadrogowa.ui.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -14,13 +14,14 @@ import androidx.compose.ui.unit.dp
 import com.devchew.kartadrogowa.logic.CardData
 import com.devchew.kartadrogowa.logic.CardLogic
 import com.devchew.kartadrogowa.logic.OSPanelType
-import com.devchew.kartadrogowa.ui.components.CardHeader
-import com.devchew.kartadrogowa.ui.components.OSPanel
 import com.devchew.kartadrogowa.ui.theme.KartaDrogowaTheme
 
 
 @Composable
-fun OSCard(data: CardData) {
+fun OSCard(
+    card: CardLogic
+) {
+    val data = card.getCardData()
     Column (
         verticalArrangement = Arrangement.spacedBy(5.dp),
         modifier = Modifier
@@ -42,6 +43,16 @@ fun OSCard(data: CardData) {
             data.panels.forEach {
                 OSPanel(it)
             }
+            PanelAddModal(
+                starting = data.panels.isEmpty(),
+                onConfirmation = { type, name, duration->
+                    card.addPanel(
+                        type,
+                        name,
+                        duration
+                    )
+                }
+            )
         }
     }
 }
@@ -51,7 +62,7 @@ fun OSCard(data: CardData) {
 fun OSCardPreview() {
     val tempCardData = CardLogic()
 
-    tempCardData.Create(
+    tempCardData.create(
         carNumber = 68,
         name = "Rally Monte Calvaria",
         date = "2021-10-10",
@@ -72,7 +83,7 @@ fun OSCardPreview() {
 
     KartaDrogowaTheme {
         OSCard(
-            tempCardData.getCardData()
+            tempCardData
         )
     }
 }

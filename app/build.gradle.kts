@@ -52,6 +52,8 @@ android {
 dependencies {
 
     implementation(libs.androidx.room.runtime)
+    implementation(libs.firebase.database)
+    implementation(libs.androidx.navigation.compose)
     annotationProcessor(libs.androidx.room.compiler)
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
