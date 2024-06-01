@@ -1,5 +1,6 @@
 package com.devchew.kartadrogowa.navigation
 
+import android.icu.text.SimpleDateFormat
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -7,13 +8,10 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableFloatStateOf
-import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -21,19 +19,16 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
-import com.devchew.kartadrogowa.logic.CardLogic
-import com.devchew.kartadrogowa.logic.OSPanelType
+import com.devchew.kartadrogowa.database.Card
+import com.devchew.kartadrogowa.logic.MainViewModel
 
 @Composable
-fun CardCreation(navController: NavHostController) {
+fun CardCreation(navController: NavHostController, viewModel: MainViewModel) {
     val name = remember { mutableStateOf("") }
-    val type = remember { mutableStateOf(OSPanelType.Normal) }
-    val duration = remember { mutableFloatStateOf(0f) }
-    val cardNumber = remember { mutableIntStateOf(0) }
-    val carNumber = remember { mutableIntStateOf(0) }
-    val date = remember { mutableStateOf("") }
-
-    val cardLogic = remember { CardLogic() }
+    val cardNumber = remember { mutableStateOf("") }
+    val carNumber = remember { mutableStateOf("") }
+    val date = remember { mutableStateOf(SimpleDateFormat("yyyy-MM-dd").format(System.currentTimeMillis())) }
+    val saveing = remember { mutableStateOf(false) }
 
     Column(
         modifier = Modifier
@@ -51,42 +46,23 @@ fun CardCreation(navController: NavHostController) {
             label = { Text("Nazwa PKC") }
         )
         TextField(
-            value = duration.floatValue.toString(),
+            value = cardNumber.value,
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-            onValueChange = { text -> duration.floatValue = text.toFloat() },
-            label = { Text("Długość PKC") }
-        )
-        TextField(
-            value = cardNumber.intValue.toString(),
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-            onValueChange = { text -> cardNumber.intValue = text.toInt() },
+            onValueChange = { text -> cardNumber.value = text },
             label = { Text("Numer karty") }
         )
         TextField(
-            value = carNumber.intValue.toString(),
+            value = carNumber.value,
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-            onValueChange = { text -> carNumber.intValue = text.toInt() },
+            onValueChange = { text -> carNumber.value = text },
             label = { Text("Numer startowy") }
         )
         TextField(
             value = date.value,
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
             onValueChange = { text -> date.value = text },
-            label = { Text("Numer karty") }
+            label = { Text("Data") }
         )
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.Center,
-            verticalAlignment = Alignment.CenterVertically,
-        ) {
-            Text(
-                "Startowy PKC",
-                modifier = Modifier.padding(10.dp),
-            )
-            Switch(checked = type.value == OSPanelType.Start, onCheckedChange = {
-                type.value = if (it) OSPanelType.Start else OSPanelType.Normal
-            })
-        }
 
 
         Row(
@@ -102,16 +78,25 @@ fun CardCreation(navController: NavHostController) {
             }
             TextButton(
                 onClick = {
-                    cardLogic.addPanel(
-                        type = type.value,
-                        psName = name.value,
-                        duration = duration.value
+                    saveing.value = true
+                    viewModel.createCard(
+                        Card(
+                            name = name.value,
+                            cardNumber = cardNumber.value.toInt(),
+                            date = date.value,
+                            carNumber = carNumber.value.toInt(),
+                        ),
+                        callback = { id ->
+                            navController.navigate(NavigationItem.Card.route + "/${id}")
+                        }
                     )
-                    navController.navigate(NavigationItem.Card.route + "/${cardLogic.id}")
                 },
                 modifier = Modifier.padding(8.dp),
             ) {
-                Text("Potwierdź")
+                when {
+                    saveing.value -> Text("Zapisywanie...")
+                    else -> Text("Potwierdź")
+                    }
             }
         }
     }

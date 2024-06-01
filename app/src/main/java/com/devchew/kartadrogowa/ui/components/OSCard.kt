@@ -6,22 +6,24 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.devchew.kartadrogowa.logic.CardData
-import com.devchew.kartadrogowa.logic.CardLogic
-import com.devchew.kartadrogowa.logic.OSPanelType
-import com.devchew.kartadrogowa.ui.theme.KartaDrogowaTheme
+import com.devchew.kartadrogowa.database.Panel
+import com.devchew.kartadrogowa.logic.MainViewModel
 
 
 @Composable
 fun OSCard(
-    card: CardLogic
+    cardId: Int, viewModel: MainViewModel,
 ) {
-    val data = card.getCardData()
+    val card by viewModel.card.collectAsState()
+    val panels by viewModel.panels.collectAsState()
+
     Column (
         verticalArrangement = Arrangement.spacedBy(5.dp),
         modifier = Modifier
@@ -29,10 +31,10 @@ fun OSCard(
             .padding(5.dp)
     ) {
         CardHeader(
-            data.carNumber,
-            data.name,
-            data.date,
-            data.cardNumber
+            card.carNumber,
+            card.name,
+            card.date,
+            card.cardNumber
         )
         Column (
             verticalArrangement = Arrangement.spacedBy(5.dp),
@@ -40,16 +42,23 @@ fun OSCard(
                 .verticalScroll(rememberScrollState())
                 .weight(weight = 1f, fill = false)
         ) {
-            data.panels.forEach {
-                OSPanel(it)
+            panels.forEach {
+//                OSPanel(it)
+                Text(text = it.name)
             }
             PanelAddModal(
-                starting = data.panels.isEmpty(),
-                onConfirmation = { type, name, duration->
-                    card.addPanel(
-                        type,
-                        name,
-                        duration
+                starting = panels.isEmpty(),
+                onConfirmation = { type, name, duration ->
+                    viewModel.onAddPanel(
+                        panel = Panel(
+                            pkcType = type,
+                            name = name,
+                            duration = duration,
+                            cardId = cardId,
+                        ),
+                        callback = { id ->
+                            viewModel.loadCard(id)
+                        }
                     )
                 }
             )
@@ -57,33 +66,33 @@ fun OSCard(
     }
 }
 
-@Preview(showBackground = true, name = "OSCard", showSystemUi = true)
-@Composable
-fun OSCardPreview() {
-    val tempCardData = CardLogic()
-
-    tempCardData.create(
-        carNumber = 68,
-        name = "Rally Monte Calvaria",
-        date = "2021-10-10",
-        cardNumber = 4
-    )
-
-    tempCardData.addPanel(
-        OSPanelType.Start,
-        "Start",
-        0f
-    )
-
-    tempCardData.addPanel(
-        OSPanelType.Normal,
-        "Radom",
-        11.67f
-    )
-
-    KartaDrogowaTheme {
-        OSCard(
-            tempCardData
-        )
-    }
-}
+//@Preview(showBackground = true, name = "OSCard", showSystemUi = true)
+//@Composable
+//fun OSCardPreview() {
+//    val tempCardData = CardLogic()
+//
+//    tempCardData.create(
+//        carNumber = 68,
+//        name = "Rally Monte Calvaria",
+//        date = "2021-10-10",
+//        cardNumber = 4
+//    )
+//
+//    tempCardData.addPanel(
+//        OSPanelType.Start,
+//        "Start",
+//        0f
+//    )
+//
+//    tempCardData.addPanel(
+//        OSPanelType.Normal,
+//        "Radom",
+//        11.67f
+//    )
+//
+//    KartaDrogowaTheme {
+//        OSCard(
+//            tempCardData
+//        )
+//    }
+//}

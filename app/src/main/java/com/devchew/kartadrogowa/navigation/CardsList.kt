@@ -6,27 +6,29 @@ import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.ListItem
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
-import com.devchew.kartadrogowa.logic.ListLogic
-import com.devchew.kartadrogowa.ui.components.PanelAddModal
+import com.devchew.kartadrogowa.logic.MainViewModel
 
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
-fun CardsList(navController: NavHostController) {
-    val list = ListLogic();
+fun CardsList(navController: NavHostController, viewModel: MainViewModel) {
+    val list by viewModel.cardList.collectAsState()
 
+    viewModel.updateCards()
 
     LazyColumn {
-        items(list.cards.value.size) { index ->
+        items(list.size) { index ->
             ListItem(
-                modifier = Modifier.clickable { navController.navigate(NavigationItem.Card.route + "/" + list.cards.value[index].id) },
+                modifier = Modifier.clickable { navController.navigate(NavigationItem.Card.route + "/" + list[index].id) },
                 text = {
-                    Text(text = list.cards.value[index].name + " [" + list.cards.value[index].cardNumber.toString() + "]")
+                    Text(text = list[index].name + " [" + list[index].cardNumber.toString() + "]")
                 },
                 secondaryText = {
-                    Text(text = list.cards.value[index].date)
+                    Text(text = list[index].date)
                 }
             )
         }
