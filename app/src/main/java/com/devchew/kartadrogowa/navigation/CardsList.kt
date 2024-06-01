@@ -10,7 +10,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
-import com.devchew.kartadrogowa.logic.MainViewModel
+import com.devchew.kartadrogowa.models.MainViewModel
 
 
 @OptIn(ExperimentalMaterialApi::class)

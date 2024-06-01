@@ -11,6 +11,6 @@ interface PanelDao {
         @Upsert
         suspend fun upsert(panel: Panel): Long
 
-        @Query("SELECT * FROM Panel WHERE cardId = :cardId")
+        @Query("SELECT * FROM Panel WHERE cardId = :cardId ORDER BY id ASC")
         suspend fun getPanels(cardId: Int): List<Panel>
 }

@@ -1,4 +1,4 @@
-package com.devchew.kartadrogowa.logic
+package com.devchew.kartadrogowa.models
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope

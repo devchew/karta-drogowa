@@ -14,7 +14,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.devchew.kartadrogowa.database.Panel
-import com.devchew.kartadrogowa.logic.MainViewModel
+import com.devchew.kartadrogowa.models.MainViewModel
 
 
 @Composable
@@ -43,8 +43,7 @@ fun OSCard(
                 .weight(weight = 1f, fill = false)
         ) {
             panels.forEach {
-//                OSPanel(it)
-                Text(text = it.name)
+                OSPanel(it)
             }
             PanelAddModal(
                 starting = panels.isEmpty(),

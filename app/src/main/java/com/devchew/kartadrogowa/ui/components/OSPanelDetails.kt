@@ -23,12 +23,12 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.devchew.kartadrogowa.logic.OSPanelType
-import com.devchew.kartadrogowa.logic.PanelLogic
+import com.devchew.kartadrogowa.database.OSPanelType
+import com.devchew.kartadrogowa.models.PanelModel
 
 @Composable
 fun Details(
-    panel: PanelLogic,
+    panel: PanelModel,
     modifier: Modifier = Modifier,
 ) {
     Column(
@@ -47,9 +47,9 @@ fun Details(
                 .fillMaxWidth()
         ) {
 
-            if (panel.pkcType == OSPanelType.Normal) {
+            if (panel.pkcType.value == OSPanelType.Normal) {
                 Text(
-                    text = "${panel.name}\n${panel.duration}km",
+                    text = "${panel.name.value}\n${panel.duration.value}km",
                     style = TextStyle(
                         fontSize = 10.sp,
                         fontWeight = FontWeight(700),
@@ -77,7 +77,7 @@ fun Details(
             modifier = Modifier
                 .fillMaxWidth()
         ) {
-            if (panel.pkcType == OSPanelType.Normal) {
+            if (panel.pkcType.value == OSPanelType.Normal) {
                 InputGroup(
                     name = "Prowizoryczny\nczas startu(+3min)",
                     description = null,
@@ -129,7 +129,7 @@ fun Details(
             modifier = Modifier
                 .fillMaxWidth()
         ) {
-            if (panel.pkcType == OSPanelType.Normal) {
+            if (panel.pkcType.value == OSPanelType.Normal) {
                 InputGroup(
                     name = null,
                     description = null,
@@ -143,7 +143,7 @@ fun Details(
             }
             InputGroup(
                 name = null,
-                description = "PKC ${(panel.pkc + 1)}",
+                description = "PKC ${(panel.pkc.value + 1)}",
                 gray = true,
                 h = panel.pkcTime.value.h,
                 m = panel.pkcTime.value.m,

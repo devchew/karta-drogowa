@@ -1,36 +1,23 @@
-package com.devchew.kartadrogowa.logic
+package com.devchew.kartadrogowa.models
 
 import androidx.compose.runtime.mutableStateOf
+import com.devchew.kartadrogowa.database.Panel
 
-class TimeStruct(
-    val h: Int = -1,
-    val m: Int = -1,
-    val s: Int = -1,
-    val tenths: Int = -1
-) {
-    fun isSet(): Boolean {
-        return h != -1 || m != -1 || s != -1 || tenths != -1
-    }
-}
-
-enum class OSPanelType {
-    Start,
-    Normal
-}
-class PanelLogic(
-    val pkcType: OSPanelType,
-    val pkc: Int,
-    val name: String?,
-    val duration: Float
+class PanelModel(
+    val panel: Panel
 ) {
 
-    var finishTime = mutableStateOf(TimeStruct())
-    var finishResult = mutableStateOf(TimeStruct())
-    var provisionalStartTime = mutableStateOf(TimeStruct())
-    var realStartTime = mutableStateOf(TimeStruct())
-    var idealTime = mutableStateOf(TimeStruct())
-    var pkcTime = mutableStateOf(TimeStruct())
-    var estimatedTime = mutableStateOf(TimeStruct())
+    val pkcType = mutableStateOf(panel.pkcType)
+    val pkc = mutableStateOf(panel.pkc)
+    val name = mutableStateOf(panel.name)
+    val duration = mutableStateOf(panel.duration)
+    var finishTime = mutableStateOf(TimeStruct().apply { fromSeconds(panel.finishTime) })
+    var finishResult = mutableStateOf(TimeStruct().apply { fromSeconds(panel.finishResult) })
+    var provisionalStartTime = mutableStateOf(TimeStruct().apply { fromSeconds(panel.provisionalStartTime) })
+    var realStartTime = mutableStateOf(TimeStruct().apply { fromSeconds(panel.realStartTime) })
+    var idealTime = mutableStateOf(TimeStruct().apply { fromSeconds(panel.idealTime) })
+    var pkcTime = mutableStateOf(TimeStruct().apply { fromSeconds(panel.pkcTime) })
+    var estimatedTime = mutableStateOf(TimeStruct().apply { fromSeconds(panel.estimatedTime) })
 
     var finishCallback: (() -> Unit)? = null
 
@@ -53,7 +40,7 @@ class PanelLogic(
             return finishResult.value
         }
         // get finishTime by subtracting realStartTime from finishTime
-        return subtractTime(finishTime.value, realStartTime.value)
+        return subtractTime(listOf(finishTime.value, realStartTime.value))
     }
     fun finishResultChange(time: TimeStruct) {
         finishResult.value = time

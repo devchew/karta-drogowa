@@ -13,7 +13,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.compose.rememberNavController
 import androidx.room.Room
 import com.devchew.kartadrogowa.database.Database
-import com.devchew.kartadrogowa.logic.MainViewModel
+import com.devchew.kartadrogowa.models.MainViewModel
 import com.devchew.kartadrogowa.navigation.AppNavHost
 import com.devchew.kartadrogowa.ui.theme.KartaDrogowaTheme
 

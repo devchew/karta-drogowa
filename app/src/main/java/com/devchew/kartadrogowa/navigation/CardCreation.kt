@@ -20,7 +20,7 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.devchew.kartadrogowa.database.Card
-import com.devchew.kartadrogowa.logic.MainViewModel
+import com.devchew.kartadrogowa.models.MainViewModel
 
 @Composable
 fun CardCreation(navController: NavHostController, viewModel: MainViewModel) {

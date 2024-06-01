@@ -32,7 +32,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.chargemap.compose.numberpicker.NumberPicker
-import com.devchew.kartadrogowa.logic.TimeStruct
+import com.devchew.kartadrogowa.models.TimeStruct
 import com.devchew.kartadrogowa.ui.theme.KartaDrogowaTheme
 
 @Composable
