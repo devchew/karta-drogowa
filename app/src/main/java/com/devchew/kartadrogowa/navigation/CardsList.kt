@@ -18,6 +18,7 @@ import com.devchew.kartadrogowa.models.MainViewModel
 fun CardsList(navController: NavHostController, viewModel: MainViewModel) {
     val list by viewModel.cardList.collectAsState()
 
+
     viewModel.updateCards()
 
     LazyColumn {
@@ -36,6 +37,7 @@ fun CardsList(navController: NavHostController, viewModel: MainViewModel) {
             ListItem(
                 modifier = Modifier.clickable { navController.navigate(NavigationItem.CreateCard.route) },
                 text = {
+
                     Text(text = "Dodaj nową kartę")
                 },
             )

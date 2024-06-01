@@ -36,7 +36,7 @@ fun PanelAddModal(
 
     val name = remember { mutableStateOf("") }
     val type = remember { mutableStateOf(OSPanelType.Normal) }
-    val duration = remember { mutableFloatStateOf(0f) }
+    val duration = remember { mutableStateOf("") }
 
     if (starting) {
         type.value = OSPanelType.Start
@@ -80,9 +80,9 @@ fun PanelAddModal(
                         label = { Text("Nazwa PKC") }
                     )
                     TextField(
-                        value = duration.floatValue.toString(),
+                        value = duration.value,
                         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-                        onValueChange = { text -> duration.floatValue = text.toFloat() },
+                        onValueChange = { text -> duration.value = text },
                         label = { Text("Długość PKC") }
                     )
                     Row(
@@ -116,7 +116,7 @@ fun PanelAddModal(
                                 onConfirmation(
                                     type.value,
                                     name.value,
-                                    duration.floatValue
+                                    duration.value.toFloat()
                                 )
                                 openAlertDialog.value = false
                             },
