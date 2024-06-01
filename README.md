@@ -19,3 +19,7 @@ Cyfrowa wersja karty drogowej, jako wsparcie przy pilnowaniu i obliczaniu czasu 
 - [ ] ekran z zegarem omierzający czas do stawienia się na kolejnym punkcie, lub wyjeździe z przegrupowania
 - [ ] powiadomienia z informacją o koniecznośi stawienia się w punkcie
 - [ ] udostępnianie karty jako obrazek * 
+
+## linki
+[projekt karty](https://www.montekarlino.pl/doc/drogowa2010.pdf)
+[zasady uzupełniania](https://docplayer.pl/39276492-Karty-pracy-dla-sedziow-funkcyjnych-protokoly-startu-mety-lotnej-mety-stop-i-pkc.html)
