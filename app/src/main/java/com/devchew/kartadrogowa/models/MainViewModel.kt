@@ -24,6 +24,10 @@ class MainViewModel(
     private var _panels = MutableStateFlow(emptyList<PanelModel>())
     val panels = _panels.stateIn(viewModelScope, SharingStarted.WhileSubscribed(), emptyList())
 
+    //mock Timer, now + 1min
+    private val _closestTimer = MutableStateFlow(getCurrentTime().toMs() + 70000L)
+    val closestTimer = _closestTimer.stateIn(viewModelScope, SharingStarted.WhileSubscribed(), 0)
+
     fun loadCard(id: Int) {
         viewModelScope.launch {
             _card.value = cardDao.getById(id)
@@ -33,9 +37,20 @@ class MainViewModel(
                     viewModelScope.launch {
                         panelDao.upsert(panel)
                     }
+                    findClosestTimer()
                 }
                 model
             }
+        }
+    }
+
+    fun findClosestTimer() {
+        viewModelScope.launch {
+            val currentTime = getCurrentTime().toMs()
+            val closest = panels.value.map { it.estimatedTime.value.toMs() }
+                .filter { it > currentTime }
+                .minOrNull()
+            _closestTimer.value = closest ?: 0
         }
     }
 

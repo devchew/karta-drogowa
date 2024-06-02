@@ -6,7 +6,7 @@ class TimeStruct(
     var h: Int = -1,
     var m: Int = -1,
     var s: Int = -1,
-    var tenths: Int = -1
+    var tenths: Int = -1 // 1/10 of a second
 ) {
     fun isSet(): Boolean {
         return h != -1 || m != -1 || s != -1 || tenths != -1
@@ -16,7 +16,28 @@ class TimeStruct(
         if (!isSet()) {
             return -1
         }
-        return h * 3600 + m * 60 + s + tenths / 10
+        return h * 3600 + m * 60 + s
+    }
+
+    fun toMs(): Long {
+        if (!isSet()) {
+            return -1
+        }
+        return ((h * 3600 + m * 60 + s) * 1000L) + tenths
+    }
+
+    fun fromMs(timestamp: Long) {
+        if (timestamp < 0) {
+            h = -1
+            m = -1
+            s = -1
+            tenths = -1
+            return
+        }
+        h = (timestamp / 3600000).toInt()
+        m = ((timestamp % 3600000) / 60000).toInt()
+        s = ((timestamp % 60000) / 1000).toInt()
+        tenths = (timestamp % 1000).toInt()
     }
 
     fun fromSeconds(seconds: Int) {
@@ -30,6 +51,16 @@ class TimeStruct(
         m = (seconds % 3600) / 60
         s = seconds % 60
         tenths = seconds % 10
+    }
+
+    override fun toString(): String {
+        if (!isSet()) {
+            return "--:--"
+        }
+        if (h == 0) {
+            return String.format("%02d:%02d", m, s)
+        }
+        return String.format("%02d:%02d:%02d", h, m, s)
     }
 }
 
