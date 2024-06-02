@@ -25,8 +25,8 @@ import com.devchew.kartadrogowa.models.MainViewModel
 @Composable
 fun CardCreation(navController: NavHostController, viewModel: MainViewModel) {
     val name = remember { mutableStateOf("") }
-    val cardNumber = remember { mutableStateOf("") }
-    val carNumber = remember { mutableStateOf("") }
+    val cardNumber = remember { mutableStateOf("1") }
+    val carNumber = remember { mutableStateOf("1") }
     val date = remember { mutableStateOf(SimpleDateFormat("yyyy-MM-dd").format(System.currentTimeMillis())) }
     val saveing = remember { mutableStateOf(false) }
 

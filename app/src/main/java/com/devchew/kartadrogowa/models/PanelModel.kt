@@ -19,8 +19,28 @@ class PanelModel(
     var pkcTime = mutableStateOf(TimeStruct().apply { fromSeconds(panel.pkcTime) })
     var estimatedTime = mutableStateOf(TimeStruct().apply { fromSeconds(panel.estimatedTime) })
 
-    var finishCallback: (() -> Unit)? = null
+    var changeCallback: ((Panel) -> Unit)? = null
 
+
+    private fun runChangeCallback() {
+        changeCallback?.invoke(
+            Panel(
+            cardId = panel.cardId,
+            pkcType = pkcType.value,
+            pkc = pkc.value,
+            name = name.value,
+            duration = duration.value,
+            finishTime = finishTime.value.toSeconds(),
+            finishResult = finishResult.value.toSeconds(),
+            provisionalStartTime = provisionalStartTime.value.toSeconds(),
+            realStartTime = realStartTime.value.toSeconds(),
+            idealTime = idealTime.value.toSeconds(),
+            pkcTime = pkcTime.value.toSeconds(),
+            estimatedTime = estimatedTime.value.toSeconds(),
+            id = panel.id
+        )
+        )
+    }
 
 
     //finishTime
@@ -32,6 +52,7 @@ class PanelModel(
     }
     fun finishTimeChange(time: TimeStruct) {
         finishTime.value = time
+        runChangeCallback()
     }
 
     //finishResult
@@ -44,6 +65,7 @@ class PanelModel(
     }
     fun finishResultChange(time: TimeStruct) {
         finishResult.value = time
+        runChangeCallback()
     }
 
     //provisionalStartTime
@@ -60,6 +82,7 @@ class PanelModel(
         if (!realStartTime.value.isSet()) {
             realStartTimeChange(provisionalStartTime.value)
         }
+        runChangeCallback()
     }
 
     /* realStartTime
@@ -78,7 +101,7 @@ class PanelModel(
         if (idealTime.value.isSet()) {
             estimatedTimeChange(sumTime(listOf(realStartTime.value, idealTime.value)))
         }
-
+        runChangeCallback()
     }
 
     //idealTime
@@ -95,6 +118,7 @@ class PanelModel(
         if (realStartTime.value.isSet()) {
             estimatedTimeChange(sumTime(listOf(realStartTime.value, idealTime.value)))
         }
+        runChangeCallback()
     }
 
     //pkcTime
@@ -111,8 +135,7 @@ class PanelModel(
     }
     fun pkcTimeChange(time: TimeStruct) {
         pkcTime.value = time
-        // stage should be finished, trigger finishCallback
-        finishCallback?.invoke()
+        runChangeCallback()
     }
 
     //estimatedTime
@@ -124,5 +147,6 @@ class PanelModel(
     }
     fun estimatedTimeChange(time: TimeStruct) {
         estimatedTime.value = time
+        runChangeCallback()
     }
 }

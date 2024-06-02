@@ -6,7 +6,7 @@ class TimeStruct(
     var h: Int = -1,
     var m: Int = -1,
     var s: Int = -1,
-    val tenths: Int = -1
+    var tenths: Int = -1
 ) {
     fun isSet(): Boolean {
         return h != -1 || m != -1 || s != -1 || tenths != -1
@@ -14,9 +14,9 @@ class TimeStruct(
 
     fun toSeconds(): Int {
         if (!isSet()) {
-            return 0
+            return -1
         }
-        return h * 3600 + m * 60 + s
+        return h * 3600 + m * 60 + s + tenths / 10
     }
 
     fun fromSeconds(seconds: Int) {
@@ -29,6 +29,7 @@ class TimeStruct(
         h = seconds / 3600
         m = (seconds % 3600) / 60
         s = seconds % 60
+        tenths = seconds % 10
     }
 }
 

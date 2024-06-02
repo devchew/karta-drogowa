@@ -21,13 +21,21 @@ class MainViewModel(
     private var _cardList = MutableStateFlow(emptyList<Card>())
     val cardList = _cardList.stateIn(viewModelScope, SharingStarted.WhileSubscribed(), emptyList())
 
-    private var _panels = MutableStateFlow(emptyList<Panel>())
+    private var _panels = MutableStateFlow(emptyList<PanelModel>())
     val panels = _panels.stateIn(viewModelScope, SharingStarted.WhileSubscribed(), emptyList())
 
     fun loadCard(id: Int) {
         viewModelScope.launch {
             _card.value = cardDao.getById(id)
-            _panels.value = panelDao.getPanels(id)
+            _panels.value = panelDao.getPanels(id).map {
+                val model = PanelModel(it)
+                model.changeCallback = { panel ->
+                    viewModelScope.launch {
+                        panelDao.upsert(panel)
+                    }
+                }
+                model
+            }
         }
     }
 

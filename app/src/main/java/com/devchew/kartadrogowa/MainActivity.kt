@@ -56,34 +56,3 @@ class MainActivity : ComponentActivity() {
         }
     }
 }
-
-//
-//@Preview(showBackground = true, name = "Mainview", showSystemUi = true)
-//@Composable
-//fun GreetingPreview() {
-//
-//    val tempCardData = CardLogic()
-//
-//    tempCardData.create(
-//        carNumber = 68,
-//        name = "Rally Monte Calvaria",
-//        date = "2021-10-10",
-//        cardNumber = 4
-//    )
-//
-//    tempCardData.addPanel(
-//        OSPanelType.Start,
-//        "Start",
-//        0f
-//    )
-//
-//    tempCardData.addPanel(
-//        OSPanelType.Normal,
-//        "Słomczyn",
-//        4.6f
-//    )
-//
-//    KartaDrogowaTheme {
-//        OSCard(tempCardData)
-//    }
-//}

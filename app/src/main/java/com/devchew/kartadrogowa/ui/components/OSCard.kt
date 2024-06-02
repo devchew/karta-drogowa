@@ -6,7 +6,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -54,8 +53,9 @@ fun OSCard(
                             name = name,
                             duration = duration,
                             cardId = cardId,
+                            pkc = panels.size,
                         ),
-                        callback = { id ->
+                        callback = {
                             viewModel.loadCard(cardId)
                         }
                     )
@@ -64,34 +64,3 @@ fun OSCard(
         }
     }
 }
-
-//@Preview(showBackground = true, name = "OSCard", showSystemUi = true)
-//@Composable
-//fun OSCardPreview() {
-//    val tempCardData = CardLogic()
-//
-//    tempCardData.create(
-//        carNumber = 68,
-//        name = "Rally Monte Calvaria",
-//        date = "2021-10-10",
-//        cardNumber = 4
-//    )
-//
-//    tempCardData.addPanel(
-//        OSPanelType.Start,
-//        "Start",
-//        0f
-//    )
-//
-//    tempCardData.addPanel(
-//        OSPanelType.Normal,
-//        "Radom",
-//        11.67f
-//    )
-//
-//    KartaDrogowaTheme {
-//        OSCard(
-//            tempCardData
-//        )
-//    }
-//}
