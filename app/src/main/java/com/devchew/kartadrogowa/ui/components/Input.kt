@@ -95,7 +95,8 @@ fun InputGroup(
     tenths: Int? = null,
     onValueChange: (time: TimeStruct) -> Unit = { _ -> },
     beforeChane: () -> TimeStruct? = { null },
-    gray: Boolean = false
+    gray: Boolean = false,
+    modifier: Modifier = Modifier
 ) {
     var hValue by remember { mutableStateOf(h) }
     var mValue by remember { mutableStateOf(m) }
@@ -199,6 +200,7 @@ fun InputGroup(
         }
     }
     Surface(
+        modifier = modifier,
         color = Color.Transparent,
         onClick = {
             showBottomSheet = true

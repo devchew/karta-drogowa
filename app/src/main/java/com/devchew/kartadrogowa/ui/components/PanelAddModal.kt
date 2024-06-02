@@ -16,7 +16,6 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -27,6 +26,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import com.devchew.kartadrogowa.database.OSPanelType
 
+
 @Composable
 fun PanelAddModal(
     starting: Boolean = false,
@@ -35,7 +35,7 @@ fun PanelAddModal(
     val openAlertDialog = remember { mutableStateOf(false) }
 
     val name = remember { mutableStateOf("") }
-    val type = remember { mutableStateOf(OSPanelType.Normal) }
+    val type = mutableStateOf(OSPanelType.Normal)
     val duration = remember { mutableStateOf("") }
 
     if (starting) {
@@ -77,13 +77,14 @@ fun PanelAddModal(
                     TextField(
                         value = name.value,
                         onValueChange = { text -> name.value = text },
-                        label = { Text("Nazwa PKC") }
+                        label = { Text("Nazwa PKC") },
                     )
                     TextField(
                         value = duration.value,
                         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                         onValueChange = { text -> duration.value = text },
-                        label = { Text("Długość PKC") }
+                        label = { Text("Długość PKC") },
+                        isError = duration.value.isNotEmpty() && duration.value.toFloatOrNull() == null
                     )
                     Row(
                         modifier = Modifier.fillMaxWidth(),
@@ -116,10 +117,11 @@ fun PanelAddModal(
                                 onConfirmation(
                                     type.value,
                                     name.value,
-                                    duration.value.toFloat()
+                                    duration.value.toFloatOrNull() ?: 0f
                                 )
                                 openAlertDialog.value = false
                             },
+                            enabled = duration.value.isEmpty() || duration.value.toFloatOrNull() != null,
                             modifier = Modifier.padding(8.dp),
                         ) {
                             Text("Potwierdź")

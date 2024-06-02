@@ -11,7 +11,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.devchew.kartadrogowa.database.OSPanelType
+import com.devchew.kartadrogowa.database.Panel
 import com.devchew.kartadrogowa.models.PanelModel
 
 @Composable
@@ -36,7 +39,25 @@ fun NextOS(
             h = panel.estimatedTime.value.h,
             m = panel.estimatedTime.value.m,
             onValueChange = { time -> panel.estimatedTimeChange(time)},
-            beforeChane = { panel.estimatedTimeGetSuggested() }
+            beforeChane = { panel.estimatedTimeGetSuggested() },
+            modifier = Modifier
+                .padding(0.dp, 13.dp, 0.dp, 0.dp)
         )
     }
+}
+
+@Preview
+@Composable
+fun NextOSPreview() {
+    NextOS(
+        panel = PanelModel(
+            Panel(
+                pkcType = OSPanelType.Normal,
+                name = "PKC 1",
+                duration = 0f,
+                cardId = 0,
+                pkc = 0
+            )
+        )
+    )
 }

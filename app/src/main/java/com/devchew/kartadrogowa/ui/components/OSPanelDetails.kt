@@ -31,6 +31,11 @@ fun Details(
     panel: PanelModel,
     modifier: Modifier = Modifier,
 ) {
+    val title = when (panel.duration.value) {
+        0f -> "${panel.name.value}\n"
+        else -> "${panel.name.value}\n${panel.duration.value}km"
+    }
+
     Column(
         verticalArrangement = Arrangement.SpaceBetween,
         horizontalAlignment = Alignment.End,
@@ -49,7 +54,7 @@ fun Details(
 
             if (panel.pkcType.value == OSPanelType.Normal) {
                 Text(
-                    text = "${panel.name.value}\n${panel.duration.value}km",
+                    text = title,
                     style = TextStyle(
                         fontSize = 10.sp,
                         fontWeight = FontWeight(700),
@@ -67,7 +72,9 @@ fun Details(
                     s = panel.finishTime.value.s,
                     tenths = panel.finishTime.value.tenths,
                     onValueChange = { time -> panel.finishTimeChange(time) },
-                    beforeChane = { panel.finishTimeGetSuggested() }
+                    beforeChane = { panel.finishTimeGetSuggested() },
+                    modifier = Modifier
+                        .padding(0.dp, 0.dp, 64.dp, 0.dp)
                 )
             }
         }
@@ -132,7 +139,7 @@ fun Details(
             if (panel.pkcType.value == OSPanelType.Normal) {
                 InputGroup(
                     name = null,
-                    description = null,
+                    description = "Wynik",
                     h = null,
                     m = panel.finishResult.value.m,
                     s = panel.finishResult.value.s,
