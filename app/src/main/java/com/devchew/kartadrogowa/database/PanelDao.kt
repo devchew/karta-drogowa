@@ -13,4 +13,10 @@ interface PanelDao {
 
         @Query("SELECT * FROM Panel WHERE cardId = :cardId ORDER BY id ASC")
         suspend fun getPanels(cardId: Int): List<Panel>
+
+        @Query("DELETE FROM Panel WHERE id = :id")
+        suspend fun delete(id: Int)
+
+        @Query("DELETE FROM Panel WHERE cardId = :cardId")
+        suspend fun deleteByCardId(cardId: Int)
 }

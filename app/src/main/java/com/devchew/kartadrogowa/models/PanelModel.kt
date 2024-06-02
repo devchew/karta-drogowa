@@ -7,6 +7,7 @@ class PanelModel(
     val panel: Panel
 ) {
 
+    val id = panel.id
     val pkcType = mutableStateOf(panel.pkcType)
     val pkc = mutableStateOf(panel.pkc)
     val name = mutableStateOf(panel.name)

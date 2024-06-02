@@ -42,7 +42,7 @@ fun OSCard(
                 .weight(weight = 1f, fill = false)
         ) {
             panels.forEach {
-                OSPanel(it)
+                OSPanel(it, viewModel)
             }
             PanelAddModal(
                 starting = panels.isEmpty(),

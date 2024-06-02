@@ -16,4 +16,6 @@ interface CardDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun upsert(card: Card): Long
 
+    @Query("DELETE FROM Card WHERE id = :id")
+    suspend fun delete(id: Int)
 }

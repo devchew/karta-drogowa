@@ -46,6 +46,13 @@ class MainViewModel(
         }
     }
 
+    fun removePanel(panelId: Int, callback: () -> Unit) {
+        viewModelScope.launch {
+            panelDao.delete(panelId)
+            callback()
+        }
+    }
+
     fun createCard(card: Card, callback: (Int) -> Unit) {
         viewModelScope.launch {
             val newCard = cardDao.upsert(card)
@@ -55,6 +62,14 @@ class MainViewModel(
     fun updateCards() {
         viewModelScope.launch {
             _cardList.value = cardDao.getAll()
+        }
+    }
+
+    fun removeCard(cardId: Int, callback: () -> Unit) {
+        viewModelScope.launch {
+            cardDao.delete(cardId)
+            panelDao.deleteByCardId(cardId)
+            callback()
         }
     }
 }
