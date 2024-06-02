@@ -103,6 +103,18 @@ fun InputGroup(
     var sValue by remember { mutableStateOf(s) }
     var tenthsValue by remember { mutableStateOf(tenths) }
 
+    if (h == null) {
+        hValue = 0
+    }
+    if (m == null) {
+        mValue = 0
+    }
+    if (s == null) {
+        sValue = 0
+    }
+    if (tenths == null) {
+        tenthsValue = 0
+    }
 
     val sheetState = rememberModalBottomSheetState()
     var showBottomSheet by remember { mutableStateOf(false) }

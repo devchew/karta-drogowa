@@ -80,7 +80,22 @@ fun subtractTime(times: List<TimeStruct>): TimeStruct {
     return TimeStruct().apply { fromSeconds(sum) }
 }
 
-fun getCurrentTime(): TimeStruct {
+enum class TimeStructPart {
+    HOURS,
+    MINUTES,
+    SECONDS,
+    TENTHS
+}
+
+fun getCurrentTime(filter: List<TimeStructPart> = emptyList()): TimeStruct {
     val time = LocalTime.now()
+    if (filter.isNotEmpty()) {
+        return TimeStruct(
+            if (filter.contains(TimeStructPart.HOURS)) time.hour else 0,
+            if (filter.contains(TimeStructPart.MINUTES)) time.minute else 0,
+            if (filter.contains(TimeStructPart.SECONDS)) time.second else 0,
+            if (filter.contains(TimeStructPart.TENTHS)) time.nano / 1000000 else 0
+        )
+    }
     return TimeStruct(time.hour, time.minute, time.second, time.nano / 1000000)
 }

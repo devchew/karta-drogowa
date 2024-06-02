@@ -5,8 +5,8 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.DateRange
 import androidx.compose.material.icons.filled.Home
+import androidx.compose.material.icons.outlined.PlayArrow
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
@@ -36,9 +36,12 @@ fun CardPage(navController: NavHostController, cardId: Int, viewModel: MainViewM
                     Icon(Icons.Filled.Home, "Home")
                 }
                 FloatingActionButton(
-                    onClick = { navController.navigate(NavigationItem.Timer.route + "/" + cardId + "/" + closestTimer) },
+                    onClick = {
+                        viewModel.findClosestTimer()
+                        navController.navigate(NavigationItem.Timer.route + "/" + cardId + "/" + closestTimer)
+                    },
                 ) {
-                    Icon(Icons.Default.DateRange, "Timer")
+                    Icon(Icons.Outlined.PlayArrow, "Timer")
                 }
             }
         }

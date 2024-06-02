@@ -120,13 +120,13 @@ fun TimerPage(navController: NavHostController, timestamp: Long, cardId: Int) {
         )
 
         Text(
-            text = "Start o: $starting",
+            text = "start o: $starting",
             color = Color.Black,
             fontSize = 24.sp,
             fontWeight = FontWeight(700)
         )
         Text(
-            text = "teraz jest o: ${getCurrentTime()}",
+            text = "teraz jest: ${getCurrentTime()}",
             color = Color.Black,
             fontSize = 24.sp,
             fontWeight = FontWeight(700)

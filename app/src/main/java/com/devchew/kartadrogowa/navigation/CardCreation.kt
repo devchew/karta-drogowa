@@ -8,8 +8,9 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material3.Button
+import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
@@ -32,18 +33,19 @@ fun CardCreation(navController: NavHostController, viewModel: MainViewModel) {
 
     Column(
         modifier = Modifier
-            .fillMaxSize(),
-        verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally,
+            .fillMaxSize()
+            .padding(16.dp),
+        verticalArrangement = Arrangement.spacedBy(16.dp, Alignment.Top),
+        horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Text(
-            text = "Dodaj PKC",
+            text = "Stwórz nową kartę",
             modifier = Modifier.padding(16.dp),
         )
         TextField(
             value = name.value,
             onValueChange = { text -> name.value = text },
-            label = { Text("Nazwa PKC") }
+            label = { Text("Nazwa imprezy") }
         )
         TextField(
             value = cardNumber.value,
@@ -70,13 +72,13 @@ fun CardCreation(navController: NavHostController, viewModel: MainViewModel) {
                 .fillMaxWidth(),
             horizontalArrangement = Arrangement.Center,
         ) {
-            TextButton(
+            OutlinedButton(
                 onClick = { navController.navigate(NavigationItem.List.route) },
                 modifier = Modifier.padding(8.dp),
             ) {
                 Text("Anuluj")
             }
-            TextButton(
+            Button(
                 onClick = {
                     saveing.value = true
                     viewModel.createCard(

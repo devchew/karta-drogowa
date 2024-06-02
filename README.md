@@ -23,3 +23,17 @@ Cyfrowa wersja karty drogowej, jako wsparcie przy pilnowaniu i obliczaniu czasu 
 ## linki
 [projekt karty](https://www.montekarlino.pl/doc/drogowa2010.pdf)
 [zasady uzupełniania](https://docplayer.pl/39276492-Karty-pracy-dla-sedziow-funkcyjnych-protokoly-startu-mety-lotnej-mety-stop-i-pkc.html)
+
+## screeny
+
+![card-filled.png](screenshots%2Fcard-filled.png)
+![create-card.png](screenshots%2Fcreate-card.png)
+![create-panel.png](screenshots%2Fcreate-panel.png)
+![empty-card.png](screenshots%2Fempty-card.png)
+![fill-modal.png](screenshots%2Ffill-modal.png)
+![fill-start-time.png](screenshots%2Ffill-start-time.png)
+![home.png](screenshots%2Fhome.png)
+![timer.png](screenshots%2Ftimer.png)
+![timer-almosdt-red.png](screenshots%2Ftimer-almosdt-red.png)
+![timer-almost-yellow.png](screenshots%2Ftimer-almost-yellow.png)
+![timer-red.png](screenshots%2Ftimer-red.png)

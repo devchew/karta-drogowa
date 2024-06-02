@@ -74,7 +74,7 @@ class PanelModel(
         if (provisionalStartTime.value.isSet()) {
             return provisionalStartTime.value
         }
-        return getCurrentTime()
+        return getCurrentTime(listOf(TimeStructPart.HOURS, TimeStructPart.MINUTES))
     }
     fun provisionalStartTimeChange(time: TimeStruct) {
         provisionalStartTime.value = time
@@ -93,7 +93,7 @@ class PanelModel(
         if (realStartTime.value.isSet()) {
             return realStartTime.value
         }
-        return getCurrentTime()
+        return getCurrentTime(listOf(TimeStructPart.HOURS, TimeStructPart.MINUTES))
     }
     fun realStartTimeChange(time: TimeStruct) {
         realStartTime.value = time
@@ -132,7 +132,7 @@ class PanelModel(
             return estimatedTime.value
         }
 
-        return getCurrentTime()
+        return getCurrentTime(listOf(TimeStructPart.HOURS, TimeStructPart.MINUTES))
     }
     fun pkcTimeChange(time: TimeStruct) {
         pkcTime.value = time
